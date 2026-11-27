@@ -25,8 +25,18 @@ function crumb(items) {
 function floating(label, sub, attrs) {
  return '<button class="floating" ' + attrs + '><i class="down"></i><strong>' + label + '</strong><span>' + sub + '</span></button>';
 }
+function stat(symbol, value, label) {
+ return '<li><div class="stat">'+icon(symbol)+'<p><strong>'+value+'</strong><span>'+label+'</span></p></div></li>';
+}
 function home() {
- return '<section class="hero">' + image('hero',mediaNames.hero,'backdrop') + '<div class="hero-shade"></div><div class="grid-overlay"></div><div class="hero-copy">' + marked('<h1><span>Hydrogen-powered</span><span>Unmanned systems.</span><span>Built in India.</span></h1><p>Raj Defence and Aerospace designs and manufactures long-endurance hydrogen fuel-cell drones in Pune, India.</p><a class="hero-3d" href="#/systems/rjs-h1/configuration">Explore RJS-H1 in 3D</a>') + '</div>' + floating('Why hydrogen','a cleaner, longer-endurance advantage','data-scroll="hydrogen"') + '</section>' +
+ return '<section class="hero" aria-labelledby="hero-title"><div class="hero-stage"><div class="hero-media">' + image('hero',mediaNames.hero,'backdrop') + '</div><div class="hero-shade"></div>' +
+ '<div class="hero-copy"><div class="marked">' + marker + '<h1 id="hero-title"><span class="line"><span>Hydrogen-powered</span></span> <span class="line"><span>unmanned systems.</span></span> <span class="line accent"><span>Built in India.</span></span></h1></div>' +
+ '<p>Raj Defence and Aerospace designs and manufactures long-endurance hydrogen fuel-cell drones for the armed forces, central armed police forces and homeland security agencies.</p>' +
+ '<div class="hero-actions"><a class="btn btn-primary" href="#/contact">Request a briefing '+icon('arrow-right')+'</a><button class="btn btn-glass" data-panel="capability">'+icon('file-text')+' Capability statement</button></div>' +
+ '<button class="film-link" data-film="overview"><span>'+icon('play')+'</span>Watch overview</button></div>' +
+ '<a class="model-tag" href="#/systems/rjs-h1/configuration"><i class="pulse" aria-hidden="true"></i><span><small>RAJAS RJS-H1</small><strong>Explore in 3D</strong></span>'+icon('arrow-up-right')+'</a></div>' +
+ '<div class="hero-dock"><ul class="hero-stats" aria-label="Key figures">' + stat('timer','Up to 5 hours','Endurance') + stat('package','5 kg','Payload') + stat('move-vertical','Vertical take-off','No runway') + stat('map-pin','Made in India','Pune') + '</ul>' +
+ '<button class="scroll-cue" data-scroll="hydrogen"><span>Why hydrogen</span>'+icon('arrow-down')+'</button></div></section>' +
  '<section class="hydrogen grid-paper" id="hydrogen"><div class="trace trace-a"></div><div class="trace trace-b"></div><div class="hydrogen-copy"><p class="orange-rule">Raj Defence and Aerospace brings the Raj group’s gas-engineering experience to hydrogen-powered aircraft. Design and assembly take place in Pune, India.</p><p>The company reports up to five hours of endurance with a 5 kg payload on the RAJAS RJS-H1. It takes off and lands vertically.</p></div><div class="hydrogen-side"><i class="down"></i><strong>5 kg payload.<br>Up to 5 hours.<br>Built in India.</strong></div>' + button('Read more about our approach','data-panel="approach"') + '</section>' +
  '<section class="home-systems grid-paper" id="systems"><div class="section-heading"><h2>Our systems</h2><p>mission-ready platforms</p></div><div class="home-cards">' + smallCard(systems[0]) + '<div class="orange-card"><div>RJS-H1' + icon('plane') + '</div><nav><a href="#/systems/rjs-h1">Overview</a><button data-panel="rjs-h1">Key features</button><a href="#/systems/rjs-h1/configuration">Explore in 3D</a></nav></div>' + smallCard(systems[1]) + '</div></section>';
 }
@@ -67,6 +77,7 @@ function panel(key) {
    body='<p><b>'+s.subtitle+'</b></p><p>'+s.description+'</p>'+(s.design?facts(s)+link('Explore in 3D','#/systems/'+s.id+'/configuration'):link('Explore system','#/systems/'+s.id));
  } else {
    const content={
+     capability:['Capability statement','The capability statement is shared on request with government and authorised entities.',link('Request a copy','#/contact')],
      access:['Partner access','For partner portal access, contact the RAJ Defence & Aerospace team.',link('Contact the team','#/contact')],
      approach:['Why hydrogen','A hydrogen fuel cell converts hydrogen and oxygen into electricity, producing water vapour and heat. Raj’s hybrid aircraft use a fuel cell during cruise and a battery buffer for vertical lift.',link('Explore our systems','#/systems')],
      privacy:['Privacy policy','This demonstration prepares enquiries in your own email application. Form entries stay in this browser until you choose to send the email.',''],
@@ -116,20 +127,30 @@ function setSpot(index) {
  document.querySelectorAll('[data-spot]').forEach((node,i)=>node.setAttribute('aria-pressed',String(i===selected)));
 }
 function refreshIcons(){window.lucide?.createIcons();}
-function closeMenu(){header.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');}
+function closeMenu(){header.classList.remove('open');document.body.classList.remove('menu-open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');}
 let motionContext;
 function animatePage(){
  if(!window.gsap || reduceMotion.matches)return;
  gsap.registerPlugin(ScrollTrigger);
  motionContext=gsap.context(()=>{
-   const headings = main.querySelectorAll('.hero-copy h1 span, .inner-copy h1, .contact h1, .config-copy h1');
-   const paragraphs = main.querySelectorAll('.hero-copy p, .inner-copy p, .contact .marked p');
+   if (main.querySelector('.hero')) animateHero();
+   const headings = main.querySelectorAll('.inner-copy h1, .contact h1, .config-copy h1');
+   const paragraphs = main.querySelectorAll('.inner-copy p, .contact .marked p');
    if (headings.length) gsap.from(headings,{opacity:0,y:18,duration:.75,stagger:.09,ease:'power3.out'});
    if (paragraphs.length) gsap.from(paragraphs,{opacity:0,y:8,duration:.6,delay:.15});
    gsap.utils.toArray('.home-cards, .section-heading, .hydrogen-copy, .feature-band').forEach(el=>{
      gsap.from(el,{y:12,duration:.6,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 98%',once:true}});
    });
  },main);
+}
+function animateHero(){
+ gsap.timeline({defaults:{ease:'power3.out',clearProps:'transform,opacity'}})
+  .from('.hero-media img',{scale:1.09,duration:1.8},0)
+  .from('.hero .marker',{opacity:0,y:-14,duration:.5},.15)
+  .from('.hero h1 .line>span',{yPercent:112,duration:.85,stagger:.1},.2)
+  .from('.hero-copy>p, .hero-actions, .hero-copy>.film-link',{opacity:0,y:16,duration:.6,stagger:.09},.55)
+  .from('.hero-stats li, .scroll-cue',{opacity:0,y:22,duration:.55,stagger:.07},.7)
+  .from('.model-tag',{opacity:0,duration:.5},1.05);
 }
 function render(){
  unmountViewer?.();unmountViewer=null;activeModel=null;
@@ -152,13 +173,14 @@ function render(){
  if(previews.length)import('./viewer.js').then(module=>module.renderPreviews(previews)).catch(()=>{});
  refreshIcons();
  window.scrollTo({top:0,behavior:'instant'});
+ movePill();updateHeader();
  animatePage();
 }
 document.addEventListener('click',event=>{
  const node=event.target.closest('button,a');
  if(!node)return;
  if(node.matches('.skip')){event.preventDefault();main.focus();}
- else if(node===menu){const opened=header.classList.toggle('open');menu.setAttribute('aria-expanded',String(opened));menu.setAttribute('aria-label',opened?'Close navigation':'Open navigation');}
+ else if(node===menu){const opened=header.classList.toggle('open');document.body.classList.toggle('menu-open',opened);menu.setAttribute('aria-expanded',String(opened));menu.setAttribute('aria-label',opened?'Close navigation':'Open navigation');}
  else if(node.hasAttribute('data-dismiss'))dialog.close();
  else if(node.dataset.panel)panel(node.dataset.panel);
  else if(node.dataset.film)showFilm(node.dataset.film);
@@ -180,6 +202,61 @@ document.addEventListener('submit',e=>{
  status.replaceChildren(document.createTextNode('Send the prepared draft from your email app. '));
  const retry=document.createElement('a');retry.href=mail;retry.textContent='Open draft again';status.append(retry);
  window.location.href=mail;
+});
+const nav=document.querySelector('#primary-nav');
+const navPill=document.createElement('span');
+navPill.className='nav-pill';navPill.setAttribute('aria-hidden','true');
+nav.prepend(navPill);
+function movePill(target=nav.querySelector('a[aria-current]:not(.menu-cta)')){
+ navPill.classList.toggle('on',Boolean(target));
+ if(!target)return;
+ navPill.style.width=target.offsetWidth+'px';
+ navPill.style.transform='translateX('+target.offsetLeft+'px)';
+}
+const navLink=event=>event.target.closest?.('a:not(.menu-cta)');
+nav.addEventListener('pointerover',e=>{const a=navLink(e);if(a)movePill(a);});
+nav.addEventListener('focusin',e=>{const a=navLink(e);if(a)movePill(a);});
+nav.addEventListener('pointerleave',()=>movePill());
+nav.addEventListener('focusout',e=>{if(!nav.contains(e.relatedTarget))movePill();});
+window.addEventListener('resize',()=>{if(innerWidth>900)closeMenu();movePill();updateHeader();});
+document.fonts?.ready.then(()=>movePill());
+function updateHeader(){
+ header.classList.toggle('scrolled',scrollY>24);
+ const heroActions=main.querySelector('.hero-actions');
+ header.classList.toggle('past-hero',!heroActions||heroActions.getBoundingClientRect().bottom<header.offsetHeight);
+}
+window.addEventListener('scroll',updateHeader,{passive:true});
+document.addEventListener('click',e=>{if(header.classList.contains('open')&&!header.contains(e.target))closeMenu();});
+const finePointer=window.matchMedia('(hover:hover) and (pointer:fine)');
+document.addEventListener('pointermove',e=>{
+ if(reduceMotion.matches||!finePointer.matches)return;
+ const hero=e.target.closest?.('.hero');
+ if(hero){
+  const r=hero.getBoundingClientRect();
+  hero.style.setProperty('--px',((e.clientX-r.left)/r.width-.5).toFixed(3));
+  hero.style.setProperty('--py',((e.clientY-r.top)/r.height-.5).toFixed(3));
+ }
+ const card=e.target.closest?.('.stat,.model-tag');
+ if(card){
+  const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+  card.style.setProperty('--rx',((.5-y)*9).toFixed(2)+'deg');
+  card.style.setProperty('--ry',((x-.5)*9).toFixed(2)+'deg');
+  card.style.setProperty('--gx',(x*100).toFixed(1)+'%');
+  card.style.setProperty('--gy',(y*100).toFixed(1)+'%');
+ }
+},{passive:true});
+document.addEventListener('pointerout',e=>{
+ const card=e.target.closest?.('.stat,.model-tag');
+ if(card&&!card.contains(e.relatedTarget)){card.style.removeProperty('--rx');card.style.removeProperty('--ry');}
+});
+document.addEventListener('pointerdown',e=>{
+ const target=e.target.closest?.('.btn,.nav-cta,.menu-cta,.login,.model-tag,.stat,.scroll-cue');
+ if(!target||reduceMotion.matches)return;
+ const r=target.getBoundingClientRect(),ripple=document.createElement('span');
+ ripple.className='ripple';ripple.setAttribute('aria-hidden','true');
+ ripple.style.left=(e.clientX-r.left)+'px';ripple.style.top=(e.clientY-r.top)+'px';
+ ripple.addEventListener('animationend',()=>ripple.remove());
+ target.append(ripple);
 });
 reduceMotion.addEventListener('change',()=>{motionContext?.revert();animatePage();});
 window.addEventListener('hashchange',()=>{render();main.focus({preventScroll:true});});
