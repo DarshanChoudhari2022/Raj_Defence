@@ -1,0 +1,15 @@
+{
+  "name": "raj-defence-aerospace",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "node build.mjs"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "three": "^0.180.0"
+  }
+}
