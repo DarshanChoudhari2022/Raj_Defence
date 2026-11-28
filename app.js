@@ -46,17 +46,31 @@ const timelinePhases=[
  ['PHASE 05','MULTI-DOMAIN EXPANSION','Maritime deck-launched UAV, air-independent fuel-cell UUV, Hydrogen ISR, and Loitering Munition programmes.'],
  ['PHASE 06','NEXT-GEN DEVELOPMENT','100 kg Heavy-Lift Hydrogen VTOL logistics aircraft and rapid-launch Counter-Drone Interceptor UAV.']
 ];
+// Positions are fractions of the hero photo and are illustrative. Update them when the photo changes.
+const powerPoints=[
+ {x:60,y:73,wire:130,flip:true,symbol:'zap',title:'Fuel cell for cruise',text:'Steady power in forward flight'},
+ {x:68.1,y:64.8,wire:186,symbol:'battery-charging',title:'Battery buffer for lift',text:'Powers vertical take-off'},
+ {x:86.8,y:72.6,wire:162,flip:true,symbol:'plane',title:'Fixed wing for range',text:'Less energy than hovering'}
+];
+function heroPoints() {
+ return '<div class="hero-frame hero-overlay"><ul class="hero-scene" aria-label="How the hydrogen hybrid system works">' + powerPoints.map(p=>'<li class="point'+(p.flip?' flip':'')+'" style="left:'+p.x+'%;top:'+p.y+'%;--wire:'+p.wire+'px"><div class="point-card">'+icon(p.symbol)+'<span><strong>'+p.title+'</strong><small>'+p.text+'</small></span></div></li>').join('') + '</ul></div>';
+}
 function home() {
  const missionNodes=rajasMissions.map(([title],i)=>'<button class="mission-node pos-'+i+'" data-mission="'+i+'" aria-expanded="false"><span>'+title+'</span><b>+</b></button>').join('');
  const ticks='<span class="tl-major"></span>'+'<i></i>'.repeat(11);
  const tlItems=[...timelinePhases,...timelinePhases].map(([phase,title,desc])=>'<article class="tl-item"><div class="tl-ruler" aria-hidden="true">'+ticks+'</div><div class="tl-body"><strong>'+phase+'</strong><span>'+title+'</span><p>'+desc+'</p></div></article>').join('');
  return '<section class="hero" aria-labelledby="hero-title">' +
- image('hero',mediaNames.hero,'backdrop') +
+ '<div class="hero-frame"><div class="hero-scene">' + image('hero',mediaNames.hero,'backdrop') + '</div></div>' +
  '<div class="hero-shade" aria-hidden="true"></div>' +
  '<div class="hero-copy"><div class="marked">' + marker + '<div>' +
  '<h1 id="hero-title"><span class="line"><span>Hydrogen-powered</span></span><span class="line"><span>unmanned systems.</span></span><span class="line"><span>Built in India.</span></span></h1>' +
- '<p>Advanced unmanned systems, hydrogen propulsion, and mission-ready platforms engineered and built in India.</p>' +
- '</div></div></div>' +
+ '<p>Raj Defence and Aerospace designs and manufactures long-endurance hydrogen fuel-cell drones for the armed forces, central armed police forces and homeland security agencies.</p>' +
+ '</div></div>' +
+ '<div class="hero-actions"><a class="btn btn-primary" href="#/contact">Request a briefing'+icon('arrow-right')+'</a><button class="btn btn-ghost" data-panel="capability">'+icon('file-text')+'Capability statement</button></div>' +
+ play('overview','Watch overview') +
+ '</div>' +
+ heroPoints() +
+ '<a class="btn hero-3d-link" href="#/systems/rjs-h1/configuration">View RJS-H1 in 3D'+icon('rotate-3d')+'</a>' +
  floating('Why hydrogen','a cleaner, longer-endurance advantage','data-scroll="hydrogen"') +
  '</section>' +
  '<section class="hydrogen grid-paper" id="hydrogen"><div class="grid-overlay" aria-hidden="true"></div><div class="trace trace-a" aria-hidden="true"></div><div class="trace trace-b" aria-hidden="true"></div><div class="hydrogen-copy"><p class="orange-rule">RAJ develops hydrogen-powered unmanned systems that deliver extended endurance, higher payload flexibility, and a lower environmental footprint, aligned with India’s self-reliant defence and aerospace goals.</p><p>Our hydrogen platforms combine proven airframe design, advanced propulsion integration, and mission-specific modularity for real-world defence and surveillance needs.</p></div><div class="hydrogen-side"><i class="down" aria-hidden="true"></i><strong>Sustainable systems.<br>Operationally proven.<br>Built in India.</strong></div>' + button('Read more about our approach','data-panel="approach"') + '</section>' +
@@ -344,11 +358,18 @@ function animateHero(){
  const lines=main.querySelectorAll('.hero h1 .line>span');
  lines.forEach((span,i)=>scrambleText(span,950,i*140));
  const sub=main.querySelector('.hero-copy p');
- if(sub)scrambleText(sub,1200,260);
+ if(sub){
+  sub.style.height=sub.offsetHeight+'px';sub.style.overflow='hidden';
+  scrambleText(sub,1200,260);
+  setTimeout(()=>{sub.style.height='';sub.style.overflow='';},1600);
+ }
  gsap.timeline({defaults:{ease:'power3.out',clearProps:'transform,opacity'}})
   .from('.hero .backdrop',{scale:1.05,duration:1.8},0)
   .from('.hero .marker',{opacity:0,y:-12,duration:.45},.1)
-  .from('.hero .floating',{opacity:0,y:16,duration:.6},.65);
+  .from('.hero .floating',{opacity:0,y:16,duration:.6},.65)
+  .from('.hero-actions, .hero-copy>.film-link',{opacity:0,y:14,duration:.55,stagger:.08},.5)
+  .from('.point',{opacity:0,duration:.5,stagger:.22},1.2)
+  .from('.hero-3d-link',{opacity:0,duration:.45},1.7);
 }
 function render(){
  unmountViewer?.();unmountViewer=null;activeModel=null;
