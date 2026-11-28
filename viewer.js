@@ -621,15 +621,15 @@ export function mountRajasShowcase(stage){
     targetPitch=pitches[index%pitches.length];
   }
   function resize(){
-    const {width,height}=stage.getBoundingClientRect();
+    const {width,height}=canvas.getBoundingClientRect();
     if(!width||!height)return;
-    renderer.setSize(width,height);
+    renderer.setSize(width,height,false);
     camera.aspect=width/height;
-    camera.position.z=width<700?12.6:9.6;
+    camera.position.z=width<700?11.8:9.6;
     camera.updateProjectionMatrix();
   }
   const observer=new ResizeObserver(resize);
-  observer.observe(stage);resize();
+  observer.observe(canvas);resize();
 
   let curYaw=targetYaw, curPitch=targetPitch, start=performance.now(), rajasVisible=true;
   const rajasIo=new IntersectionObserver(e=>{rajasVisible=Boolean(e[0]?.isIntersecting);},{threshold:.02});
