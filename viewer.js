@@ -695,7 +695,7 @@ export function mountSideSpotlight(stage){
   strobe.position.set(.38,.05,.6);
   model.add(strobe);
 
-  let inView=false, spotVisible=true, pointerX=0, pointerY=0;
+  let inView=window.innerWidth<900, spotVisible=true, pointerX=0, pointerY=0;
   const io=new IntersectionObserver(entries=>{
     spotVisible=Boolean(entries[0]?.isIntersecting);
     if(spotVisible)inView=true;
