@@ -3,11 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#ffffff">
-  <meta name="description" content="Explore RAJ Defence & Aerospace hydrogen-powered unmanned systems, engineering heritage and quality approach.">
-  <title>RAJ Defence &amp; Aerospace</title>
+  <meta name="theme-color" content="#202216">
+  <meta name="description" content="Indian maker of hydrogen fuel-cell VTOL drones for defence and homeland security.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Raj Defence and Aerospace | Hydrogen VTOL Drones">
+  <meta property="og:description" content="Indian maker of hydrogen fuel-cell VTOL drones for defence and homeland security.">
+  <meta property="og:image" content="/assets/og-thumbnail.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Raj Defence and Aerospace | Hydrogen VTOL Drones">
+  <meta name="twitter:description" content="Indian maker of hydrogen fuel-cell VTOL drones for defence and homeland security.">
+  <meta name="twitter:image" content="/assets/og-thumbnail.jpg">
+  <title>Raj Defence and Aerospace | Hydrogen VTOL Drones</title>
+  <link rel="icon" type="image/png" href="assets/raj-logo.png">
   <link rel="preload" as="font" href="assets/montserrat.ttf" type="font/ttf" crossorigin>
-  <link rel="preload" as="image" href="assets/hero.webp">
+  <link rel="preload" as="image" href="assets/hero.webp" fetchpriority="high">
   <link rel="stylesheet" href="style.css">
   <script defer src="vendor/gsap.min.js"></script>
   <script defer src="vendor/ScrollTrigger.min.js"></script>
@@ -20,19 +31,45 @@
   <header id="masthead">
     <a class="brand" href="#/" aria-label="RAJ Defence and Aerospace home"><img src="assets/raj-logo.png" alt="RAJ Defence & Aerospace" width="147" height="44"></a>
     <nav id="primary-nav" aria-label="Main navigation">
-      <a href="#/products">Products</a><a href="#/systems">Systems</a><a href="#/company">Company</a><a href="#/quality">Quality</a><a href="#/contact">Contact</a>
-      <a class="menu-cta" href="#/contact">Request a briefing <i data-lucide="arrow-right"></i></a>
+      <a href="#/systems">Systems</a><a href="#/company">Company</a><a href="#/quality">Quality</a><a href="#/contact">Contact</a>
     </nav>
     <div class="header-actions">
-      <button class="login" data-panel="access" aria-label="Partner login"><i data-lucide="user-round"></i><span>Login</span></button>
-      <a class="nav-cta" href="#/contact">Request a briefing <i data-lucide="arrow-right"></i></a>
+      <div class="header-socials" aria-label="Social links">
+        <a href="#/contact" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"/></svg></a>
+        <a href="#/contact" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.58 7.19a2.75 2.75 0 0 0-1.94-1.95C17.93 4.75 12 4.75 12 4.75s-5.93 0-7.64.49A2.75 2.75 0 0 0 2.42 7.2 28.7 28.7 0 0 0 1.93 12a28.7 28.7 0 0 0 .49 4.81 2.75 2.75 0 0 0 1.94 1.95c1.71.49 7.64.49 7.64.49s5.93 0 7.64-.49a2.75 2.75 0 0 0 1.94-1.95A28.7 28.7 0 0 0 22.07 12a28.7 28.7 0 0 0-.49-4.81zM10 15.25v-6.5L15.6 12 10 15.25z"/></svg></a>
+        <a href="#/contact" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 5a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z"/></svg></a>
+      </div>
+      <a class="header-cta" href="#/systems/rjs-h1/configuration">3D View</a>
       <button class="menu-toggle" aria-label="Open navigation" aria-controls="primary-nav" aria-expanded="false"><span></span><span></span></button>
     </div>
   </header>
   <main id="main" tabindex="-1"></main>
   <footer>
-    <div class="footer-top"><a class="footer-brand" href="#/" aria-label="RAJ home"><img src="assets/raj-logo.png" alt="RAJ Defence & Aerospace"></a><nav aria-label="Footer navigation"><a href="#/products">Products</a><a href="#/systems">Systems</a><a href="#/company">Company</a><a href="#/quality">Quality</a><a href="#/contact">Contact</a></nav></div>
-    <div class="footer-base"><span>© 2026 Raj Defence &amp; Aerospace. All rights reserved.</span><div><button data-panel="privacy">Privacy Policy</button><span>|</span><button data-panel="terms">Terms of Use</button></div></div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h2>Get More Information</h2>
+        <p><a href="mailto:info@rajda.in">info@rajda.in</a></p>
+        <p>Pune, Maharashtra, India</p>
+        <p class="footer-entity">Raj Defence and Aerospace Pvt. Ltd.<br>A Raj Group Company<br>Indigenous Hydrogen Systems</p>
+      </div>
+      <div class="footer-col">
+        <h2>Find Fast</h2>
+        <nav aria-label="Footer navigation">
+          <a href="#/systems/rjs-h1">RAJAS RJS-H1</a>
+          <a href="#/systems/heavy-lift">RAJAS Heavy-Lift</a>
+          <a href="#/systems/hydrogen-isr">Hydrogen ISR Drone</a>
+          <a href="#/systems/maritime-uav">Maritime &amp; Underwater</a>
+          <a href="#/company">About Us</a>
+          <a href="#/quality">Quality &amp; Compliance</a>
+          <a href="#/contact">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-statement">
+        <a class="footer-brand" href="#/" aria-label="RAJ home"><img src="assets/raj-logo.png" alt="RAJ Defence & Aerospace"></a>
+        <p class="footer-motto">Hydrogen-powered unmanned systems. Built in India.</p>
+      </div>
+    </div>
+    <div class="footer-base"><span>© 2026 Raj Defence &amp; Aerospace Pvt. Ltd. All rights reserved.</span><div><button data-panel="privacy">Privacy Policy</button><span>|</span><button data-panel="terms">Terms of Use</button></div></div>
   </footer>
   <dialog id="overlay"><div id="dialog-body"></div></dialog>
 </body></html>
