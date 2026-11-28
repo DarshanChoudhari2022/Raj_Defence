@@ -625,7 +625,7 @@ export function mountRajasShowcase(stage){
     if(!width||!height)return;
     renderer.setSize(width,height,false);
     camera.aspect=width/height;
-    camera.position.z=width<700?11.8:9.6;
+    camera.position.z=width<700?15.5:9.6;
     camera.updateProjectionMatrix();
   }
   const observer=new ResizeObserver(resize);
